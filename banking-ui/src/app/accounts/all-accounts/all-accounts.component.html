@@ -1,0 +1,54 @@
+<div class="accounts-container">
+  <div class="accounts-header">
+    <h2>All Bank Accounts</h2>
+    <a routerLink="/" class="btn-back">Back to Dashboard</a>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Loading accounts...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button (click)="ngOnInit()" class="btn-retry">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="accounts-content">
+    <div *ngIf="accounts.length === 0" class="no-accounts">
+      <p>No accounts found.</p>
+    </div>
+
+    <div *ngIf="accounts.length > 0" class="accounts-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer ID</th>
+            <th>Account Number</th>
+            <th>Type</th>
+            <th>Balance</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let account of accounts">
+            <td>{{ account.id }}</td>
+            <td>{{ account.customerId }}</td>
+            <td>{{ account.accountNumber }}</td>
+            <td>{{ account.accountType }}</td>
+            <td>{{ account.balance }}</td>
+            <td>
+              <span class="status-badge" [class]="'status-' + account.status.toLowerCase()">
+                {{ account.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="accounts-summary">
+      <p>Total Accounts: <strong>{{ accounts.length }}</strong></p>
+    </div>
+  </div>
+</div>

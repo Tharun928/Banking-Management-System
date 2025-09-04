@@ -1,0 +1,89 @@
+<div class="account-container">
+  <div class="account-header">
+    <h2>Create New Account</h2>
+    <a routerLink="/accounts" class="btn-back">Back to Accounts</a>
+  </div>
+
+  <div class="account-content">
+    <div class="account-form-card">
+      <h3>Account Information</h3>
+      
+      <form [formGroup]="accountForm" (ngSubmit)="submitAccount()" class="account-form">
+        <div class="form-group">
+          <label for="customerId">Customer</label>
+          <select id="customerId" formControlName="customerId" class="form-control">
+            <option value="">Select a customer</option>
+            <option *ngFor="let customer of customers" [value]="customer.id">
+              {{ getCustomerDisplay(customer) }}
+            </option>
+          </select>
+          <div *ngIf="accountForm.get('customerId')?.invalid && accountForm.get('customerId')?.touched" class="error-message">
+            Please select a customer
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="accountType">Account Type</label>
+          <select id="accountType" formControlName="accountType" class="form-control">
+            <option value="SAVINGS">Savings Account</option>
+            <option value="CURRENT">Current Account</option>
+            <option value="FIXED_DEPOSIT">Fixed Deposit</option>
+          </select>
+          <div *ngIf="accountForm.get('accountType')?.invalid && accountForm.get('accountType')?.touched" class="error-message">
+            Please select an account type
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="initialBalance">Initial Balance</label>
+          <input 
+            id="initialBalance"
+            type="number" 
+            formControlName="initialBalance" 
+            placeholder="Enter initial balance"
+            class="form-control"
+            step="0.01"
+            min="0"
+          />
+          <div *ngIf="accountForm.get('initialBalance')?.invalid && accountForm.get('initialBalance')?.touched" class="error-message">
+            Please enter a valid initial balance (minimum $0)
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="accountForm.invalid || loading" class="btn-primary">
+          <span *ngIf="!loading">Create Account</span>
+          <span *ngIf="loading">Creating...</span>
+        </button>
+      </form>
+
+      <div *ngIf="message" class="message success">
+        {{ message }}
+      </div>
+
+      <div *ngIf="error" class="message error">
+        {{ error }}
+      </div>
+    </div>
+
+    <div class="account-info-card">
+      <h3>Account Creation Guidelines</h3>
+      <div class="info-item">
+        <strong>Customer:</strong> Must select an existing customer
+      </div>
+      <div class="info-item">
+        <strong>Account Type:</strong>
+        <ul>
+          <li>Savings: Interest-bearing account</li>
+          <li>Current: Business/checking account</li>
+          <li>Fixed Deposit: High-interest term deposit</li>
+        </ul>
+      </div>
+      <div class="info-item">
+        <strong>Initial Balance:</strong> Minimum $0 required
+      </div>
+      <div class="info-item">
+        <strong>Account Number:</strong> Will be auto-generated
+      </div>
+    </div>
+  </div>
+</div>

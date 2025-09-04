@@ -1,0 +1,54 @@
+<div class="customers-container">
+  <div class="customers-header">
+    <h2>All Customers</h2>
+    <a routerLink="/" class="btn-back">Back to Dashboard</a>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Loading customers...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button (click)="ngOnInit()" class="btn-retry">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="customers-content">
+    <div *ngIf="customers.length === 0" class="no-customers">
+      <p>No customers found.</p>
+    </div>
+
+    <div *ngIf="customers.length > 0" class="customers-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>KYC Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of customers">
+            <td>{{ customer.id }}</td>
+            <td>{{ customer.fullName }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.phoneNumber }}</td>
+            <td>{{ customer.address }}</td>
+            <td>
+              <span class="kyc-badge" [class]="'kyc-' + customer.kycStatus.toLowerCase()">
+                {{ customer.kycStatus }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="customers-summary">
+      <p>Total Customers: <strong>{{ customers.length }}</strong></p>
+    </div>
+  </div>
+</div>

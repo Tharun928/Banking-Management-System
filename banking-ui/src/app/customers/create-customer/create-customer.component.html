@@ -1,0 +1,129 @@
+<div class="customer-container">
+  <div class="customer-header">
+    <h2>Create New Customer</h2>
+    <a routerLink="/customers" class="btn-back">Back to Customers</a>
+  </div>
+
+  <div class="customer-content">
+    <div class="customer-form-card">
+      <h3>Customer Information</h3>
+      
+      <form [formGroup]="customerForm" (ngSubmit)="submitCustomer()" class="customer-form">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input 
+            id="firstName"
+            type="text" 
+            formControlName="firstName" 
+            placeholder="Enter first name"
+            class="form-control"
+          />
+          <div *ngIf="customerForm.get('firstName')?.invalid && customerForm.get('firstName')?.touched" class="error-message">
+            First name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input 
+            id="lastName"
+            type="text" 
+            formControlName="lastName" 
+            placeholder="Enter last name"
+            class="form-control"
+          />
+          <div *ngIf="customerForm.get('lastName')?.invalid && customerForm.get('lastName')?.touched" class="error-message">
+            Last name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            id="email"
+            type="email" 
+            formControlName="email" 
+            placeholder="Enter email address"
+            class="form-control"
+          />
+          <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched" class="error-message">
+            Please enter a valid email address
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input 
+            id="phone"
+            type="tel" 
+            formControlName="phone" 
+            placeholder="Enter phone number"
+            class="form-control"
+          />
+          <div *ngIf="customerForm.get('phone')?.invalid && customerForm.get('phone')?.touched" class="error-message">
+            Phone number is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea 
+            id="address"
+            formControlName="address" 
+            placeholder="Enter full address"
+            class="form-control"
+            rows="3"
+          ></textarea>
+          <div *ngIf="customerForm.get('address')?.invalid && customerForm.get('address')?.touched" class="error-message">
+            Address is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dateOfBirth">Date of Birth</label>
+          <input 
+            id="dateOfBirth"
+            type="date" 
+            formControlName="dateOfBirth" 
+            class="form-control"
+          />
+          <div *ngIf="customerForm.get('dateOfBirth')?.invalid && customerForm.get('dateOfBirth')?.touched" class="error-message">
+            Date of birth is required
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="customerForm.invalid || loading" class="btn-primary">
+          <span *ngIf="!loading">Create Customer</span>
+          <span *ngIf="loading">Creating...</span>
+        </button>
+      </form>
+
+      <div *ngIf="message" class="message success">
+        {{ message }}
+      </div>
+
+      <div *ngIf="error" class="message error">
+        {{ error }}
+      </div>
+    </div>
+
+    <div class="customer-info-card">
+      <h3>Customer Creation Guidelines</h3>
+      <div class="info-item">
+        <strong>Required Fields:</strong> All fields are mandatory
+      </div>
+      <div class="info-item">
+        <strong>Email:</strong> Must be a valid email format
+      </div>
+      <div class="info-item">
+        <strong>Phone:</strong> Enter complete phone number with country code
+      </div>
+      <div class="info-item">
+        <strong>Address:</strong> Provide complete residential address
+      </div>
+      <div class="info-item">
+        <strong>Date of Birth:</strong> Customer must be 18 years or older
+      </div>
+    </div>
+  </div>
+</div>

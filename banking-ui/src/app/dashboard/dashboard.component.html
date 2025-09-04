@@ -1,0 +1,71 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Banking Dashboard</h1>
+    <div class="user-info" *ngIf="auth.isLoggedIn()">
+      <span>Welcome, {{ auth.getUsername() }} ({{ auth.getRole() }})</span>
+      <button (click)="logout()" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <div *ngIf="auth.isLoggedIn(); else pleaseLogin" class="dashboard-content">
+    <nav class="dashboard-nav">
+      <a routerLink="/" routerLinkActive="active" class="nav-link">Home</a>
+      
+      <!-- Customer Navigation -->
+      <a routerLink="/payments/make-payment" 
+         routerLinkActive="active" 
+         class="nav-link">Make Payment</a>
+      <a routerLink="/transactions/my-transactions" 
+         routerLinkActive="active" 
+         class="nav-link">My Transactions</a>
+      
+      <!-- Admin/Employee Navigation -->
+      <a *ngIf="auth.hasRole(UserRole.ADMIN, UserRole.EMPLOYEE)" 
+         routerLink="/accounts" 
+         routerLinkActive="active" 
+         class="nav-link">All Accounts</a>
+      <a *ngIf="auth.hasRole(UserRole.ADMIN, UserRole.EMPLOYEE)" 
+         routerLink="/accounts/create" 
+         routerLinkActive="active" 
+         class="nav-link">Create Account</a>
+      <a *ngIf="auth.hasRole(UserRole.ADMIN, UserRole.EMPLOYEE)" 
+         routerLink="/customers" 
+         routerLinkActive="active" 
+         class="nav-link">All Customers</a>
+      <a *ngIf="auth.hasRole(UserRole.ADMIN, UserRole.EMPLOYEE)" 
+         routerLink="/customers/create" 
+         routerLinkActive="active" 
+         class="nav-link">Create Customer</a>
+      <a *ngIf="auth.hasRole(UserRole.ADMIN, UserRole.EMPLOYEE)" 
+         routerLink="/transactions/all-transactions" 
+         routerLinkActive="active" 
+         class="nav-link">All Transactions</a>
+    </nav>
+
+    <div class="dashboard-main">
+      <div *ngIf="auth.getRole() === UserRole.CUSTOMER" class="customer-notice">
+        <h3>Customer Dashboard</h3>
+        <p>As a customer, you won't see bank-wide lists. Contact support for specific account assistance.</p>
+        <p>Your username: <strong>{{ auth.getUsername() }}</strong></p>
+        <p>Your role: <strong>{{ auth.getRole() }}</strong></p>
+      </div>
+
+      <div *ngIf="auth.hasRole(UserRole.ADMIN, UserRole.EMPLOYEE)" class="admin-notice">
+        <h3>Admin/Employee Dashboard</h3>
+        <p>You have access to view all bank accounts and customer information.</p>
+        <p>Use the navigation above to access different sections.</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #pleaseLogin>
+    <div class="login-prompt">
+      <h2>Welcome to Banking Application</h2>
+      <p>Please login or register to continue.</p>
+      <div class="auth-buttons">
+        <a routerLink="/auth/login" class="btn-primary">Login</a>
+        <a routerLink="/auth/register" class="btn-secondary">Register</a>
+      </div>
+    </div>
+  </ng-template>
+</div>

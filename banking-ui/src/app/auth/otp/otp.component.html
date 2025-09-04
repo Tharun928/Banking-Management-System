@@ -1,0 +1,59 @@
+<div class="otp-container">
+  <div class="otp-card">
+    <h2>Verify OTP</h2>
+    
+    <div class="otp-info">
+      <p>A 6-digit OTP has been sent to your email address.</p>
+      <p>Please check your email and enter the OTP below.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="otp-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          id="username"
+          type="text" 
+          formControlName="username" 
+          placeholder="Enter username"
+          class="form-control"
+        />
+        <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="error-message">
+          Username is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="otp">OTP</label>
+        <input 
+          id="otp"
+          type="text" 
+          formControlName="otp" 
+          placeholder="Enter 6-digit OTP"
+          class="form-control"
+          maxlength="6"
+          pattern="[0-9]{6}"
+        />
+        <div *ngIf="form.get('otp')?.invalid && form.get('otp')?.touched" class="error-message">
+          OTP is required (6 digits)
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid" class="btn-primary">
+        Verify OTP
+      </button>
+    </form>
+
+    <div *ngIf="message" class="message">
+      {{ message }}
+    </div>
+
+    <div class="otp-actions">
+      <div class="back-link">
+        <a routerLink="/auth/login">Back to Login</a>
+      </div>
+      <div class="resend-link">
+        <a routerLink="/auth/register">Register New Account</a>
+      </div>
+    </div>
+  </div>
+</div>

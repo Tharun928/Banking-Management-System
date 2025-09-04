@@ -1,0 +1,77 @@
+<div class="transactions-container">
+  <div class="transactions-header">
+    <h2>My Transaction History</h2>
+    <a routerLink="/" class="btn-back">Back to Dashboard</a>
+  </div>
+
+  <div class="transactions-content">
+    <div class="account-selector">
+      <label for="accountSelect">Select Account:</label>
+      <select id="accountSelect" (change)="onAccountChange($event)" class="form-control">
+        <option *ngFor="let account of customerAccounts" [value]="account.accountId">
+          {{ account.accountNumber }} ({{ account.accountType }}) - Balance: ${{ account.balance }}
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <p>Loading transactions...</p>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="!loading && !error" class="transactions-table">
+      <div *ngIf="transactions.length === 0" class="no-transactions">
+        <p>No transactions found for this account.</p>
+      </div>
+
+      <div *ngIf="transactions.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Type</th>
+              <th>From Account</th>
+              <th>To Account</th>
+              <th>Amount</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Date & Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of transactions">
+              <td>{{ transaction.transactionId }}</td>
+              <td>
+                <span class="transaction-type" [class]="getTransactionTypeClass(transaction.transactionType)">
+                  {{ transaction.transactionType }}
+                </span>
+              </td>
+              <td>{{ transaction.fromAccountNumber }}</td>
+              <td>{{ transaction.toAccountNumber }}</td>
+              <td class="amount" [class.outgoing]="transaction.fromAccountId === selectedAccountId">
+                <span *ngIf="transaction.fromAccountId === selectedAccountId">-${{ transaction.amount }}</span>
+                <span *ngIf="transaction.toAccountId === selectedAccountId">+${{ transaction.amount }}</span>
+              </td>
+              <td>{{ transaction.description || '-' }}</td>
+              <td>
+                <span class="status-badge" [class]="getStatusClass(transaction.status)">
+                  {{ transaction.status }}
+                </span>
+              </td>
+              <td>{{ formatDate(transaction.timestamp) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="transactions-summary">
+        <p>Total Transactions: <strong>{{ transactions.length }}</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
